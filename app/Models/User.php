@@ -33,4 +33,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function findForPassport($identifier)
+    {
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            return $this->orWhere('email', $identifier)->first();
+        } else {
+            return $this->orWhere('username', $identifier)->first();
+        }
+    }
 }
