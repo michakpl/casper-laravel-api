@@ -13,3 +13,7 @@ use Laravel\Passport\Passport;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::group(['prefix' => 'user'], function () {
+    Route::post('register', 'RegisterController@register');
+});
