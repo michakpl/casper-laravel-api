@@ -7,8 +7,6 @@ use App\Repositories\Interfaces\UserInterface;
 
 class UserRepository extends EloquentRepository implements UserInterface
 {
-    protected $userAddress;
-
     public function __construct(User $user)
     {
         $this->model = $user;

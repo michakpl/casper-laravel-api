@@ -17,3 +17,7 @@ use Laravel\Passport\Passport;
 Route::group(['prefix' => 'user'], function () {
     Route::post('register', 'RegisterController@register');
 });
+
+Route::group(['prefix' => 'events'], function () {
+    Route::get('upcoming', 'EventsController@upcoming');
+});
