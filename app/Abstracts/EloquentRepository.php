@@ -39,6 +39,11 @@ abstract class EloquentRepository implements RepositoryInterface
         return $this->query->find($id);
     }
 
+    public function findOrFail($id, $columns = array('*'))
+    {
+        return $this->query->findOrFail($id);
+    }
+
     public function findBySlug($slug, $columns = array('*'))
     {
         return $this->where([

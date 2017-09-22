@@ -42,4 +42,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return $this->orWhere('username', $identifier)->first();
         }
     }
+
+    public function events()
+    {
+        return $this->hasMany(\App\Models\Event::class);
+    }
 }

@@ -7,7 +7,7 @@ $factory->define(App\Models\Event::class, function (Faker $faker) {
         'user_id'   => \DB::table('users')->first()->id,
         'title' => $faker->sentence(),
         'location' => $faker->address,
-        'location_geo' => null,
+        'location_geo' => $faker->latitude . ',' . $faker->longitude,
         'description' => $faker->paragraphs(3, true),
         'starts_at' => $faker->dateTimeBetween('now', '+1 year'),
         'duration' => $faker->randomNumber(2),
