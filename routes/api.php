@@ -21,4 +21,5 @@ Route::group(['prefix' => 'user'], function () {
 Route::group(['prefix' => 'events'], function () {
     Route::get('upcoming', 'EventsController@upcoming');
     Route::get('{id}', 'EventsController@show');
+    Route::post('/', 'EventsController@store');
 });
