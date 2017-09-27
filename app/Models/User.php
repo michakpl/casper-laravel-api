@@ -43,8 +43,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
     }
 
-    public function events()
+    public function createdEvents()
     {
         return $this->hasMany(\App\Models\Event::class);
+    }
+
+    public function events()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'event_guests', 'event_id', 'user_id');
+    }
+
+    public function invitations()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'event_invitations', 'event_id', 'user_id');
     }
 }

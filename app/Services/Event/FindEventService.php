@@ -11,6 +11,8 @@ class FindEventService
 
     public function make(string $id)
     {
-        return $this->event->with('user')->findOrFail($id);
+        return $this->event->with('user')
+                            ->with('guests')
+                            ->findOrFail($id);
     }
 }

@@ -4,21 +4,25 @@ use Illuminate\Http\Request;
 use App\Http\Requests\EventStore;
 use App\Services\Event\FindEventService;
 use App\Services\Event\CreateEventService;
+use App\Services\Event\JoinToEventService;
 use App\Services\Event\GetAllUpcomingEventsService;
 
 class EventsController extends Controller
 {
     protected $findEvent;
     protected $createEvent;
+    protected $joinToEvent;
     protected $getAllUpcomingEvents;
 
     public function __construct(
         FindEventService $findEvent,
         CreateEventService $createEvent,
+        JoinToEventService $joinToEvent,
         GetAllUpcomingEventsService $getAllUpcomingEvents
     ) {
         $this->findEvent = $findEvent;
         $this->createEvent = $createEvent;
+        $this->joinToEvent = $joinToEvent;
         $this->getAllUpcomingEvents = $getAllUpcomingEvents;
     }
 
@@ -62,5 +66,22 @@ class EventsController extends Controller
         $event = $this->findEvent->make($id);
 
         return response()->json($event);
+    }
+
+    public function join(string $id)
+    {
+        $event = $this->findEvent->make($id);
+
+        if ($event) {
+            $this->joinToEvent->make($event);
+
+            return response()->json([
+                'message'   => 'Successfully joined to event'
+            ]);
+        }
+
+        return response()->json([
+            'message'   => 'Something went wrong'
+        ], 500);
     }
 }

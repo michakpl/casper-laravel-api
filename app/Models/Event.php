@@ -24,4 +24,14 @@ class Event extends Model
     {
         return $this->belongsTo(\App\Models\User::class);
     }
+
+    public function guests()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'event_guests', 'event_id', 'user_id');
+    }
+
+    public function invitations()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'event_invitations', 'event_id', 'user_id');
+    }
 }
