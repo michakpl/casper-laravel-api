@@ -17,6 +17,7 @@ use Laravel\Passport\Passport;
 Route::group(['prefix' => 'user'], function () {
     Route::post('register', 'RegisterController@register');
     Route::get('current', 'UsersController@currentUser');
+    Route::get('lists', 'UsersController@index');
 });
 
 Route::group(['prefix' => 'events'], function () {
@@ -24,4 +25,5 @@ Route::group(['prefix' => 'events'], function () {
     Route::get('{id}', 'EventsController@show');
     Route::post('/', 'EventsController@store');
     Route::post('{id}/join', 'EventsController@join');
+    Route::post('{id}/invite', 'EventsController@invite');
 });

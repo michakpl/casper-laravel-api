@@ -5,6 +5,7 @@ use App\Http\Requests\EventStore;
 use App\Services\Event\FindEventService;
 use App\Services\Event\CreateEventService;
 use App\Services\Event\JoinToEventService;
+use App\Services\Event\UserInvitationService;
 use App\Services\Event\GetAllUpcomingEventsService;
 
 class EventsController extends Controller
@@ -12,17 +13,20 @@ class EventsController extends Controller
     protected $findEvent;
     protected $createEvent;
     protected $joinToEvent;
+    protected $userInvitation;
     protected $getAllUpcomingEvents;
 
     public function __construct(
         FindEventService $findEvent,
         CreateEventService $createEvent,
         JoinToEventService $joinToEvent,
+        UserInvitationService $userInvitation,
         GetAllUpcomingEventsService $getAllUpcomingEvents
     ) {
         $this->findEvent = $findEvent;
         $this->createEvent = $createEvent;
         $this->joinToEvent = $joinToEvent;
+        $this->userInvitation = $userInvitation;
         $this->getAllUpcomingEvents = $getAllUpcomingEvents;
     }
 
@@ -81,6 +85,23 @@ class EventsController extends Controller
         }
 
         return response()->json([
+            'message'   => 'Something went wrong'
+        ], 500);
+    }
+
+    public function invite(Request $request, string $id)
+    {
+        $event = $this->findEvent->make($id);
+
+        if ($event) {
+            $this->userInvitation->make($event, $request->get('user_id'));
+
+            return response()->json([
+                'message'   => 'Successfully invited user to event'
+            ]);
+        }
+
+        return respons()->json([
             'message'   => 'Something went wrong'
         ], 500);
     }
