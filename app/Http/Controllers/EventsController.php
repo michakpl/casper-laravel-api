@@ -6,6 +6,7 @@ use App\Services\Event\FindEventService;
 use App\Services\Event\CreateEventService;
 use App\Services\Event\JoinToEventService;
 use App\Services\Event\UserInvitationService;
+use App\Services\Event\RemoveEventGuestService;
 use App\Services\Event\GetAllUpcomingEventsService;
 
 class EventsController extends Controller
@@ -14,6 +15,7 @@ class EventsController extends Controller
     protected $createEvent;
     protected $joinToEvent;
     protected $userInvitation;
+    protected $removeEventGuest;
     protected $getAllUpcomingEvents;
 
     public function __construct(
@@ -21,6 +23,7 @@ class EventsController extends Controller
         CreateEventService $createEvent,
         JoinToEventService $joinToEvent,
         UserInvitationService $userInvitation,
+        RemoveEventGuestService $removeEventGuest,
         GetAllUpcomingEventsService $getAllUpcomingEvents
     ) {
         $this->middleware('auth')->only([
@@ -33,6 +36,7 @@ class EventsController extends Controller
         $this->createEvent = $createEvent;
         $this->joinToEvent = $joinToEvent;
         $this->userInvitation = $userInvitation;
+        $this->removeEventGuest = $removeEventGuest;
         $this->getAllUpcomingEvents = $getAllUpcomingEvents;
     }
 
@@ -107,7 +111,24 @@ class EventsController extends Controller
             ]);
         }
 
-        return respons()->json([
+        return response()->json([
+            'message'   => 'Something went wrong'
+        ], 500);
+    }
+
+    public function removeGuest(string $id, string $user_id)
+    {
+        $event = $this->findEvent->make($id);
+
+        if ($event) {
+            if ($this->removeEventGuest->make($event, $user_id)) {
+                return response()->json([
+                    'message'   => 'Successfully removed guest'
+                ]);
+            }
+        }
+
+        return response()->json([
             'message'   => 'Something went wrong'
         ], 500);
     }

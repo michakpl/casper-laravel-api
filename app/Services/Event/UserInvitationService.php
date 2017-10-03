@@ -1,6 +1,7 @@
 <?php namespace App\Services\Event;
 
 use DB;
+use Auth;
 use App\Models\Event;
 use App\Notifications\UserInvitation;
 use App\Services\User\FindUserService;
@@ -19,10 +20,12 @@ class UserInvitationService
 
     public function make(Event $event, string $user_id)
     {
-        $user = $this->findUser->make($user_id);
+        $currentUser = Auth::user();
 
-        if ($this->userCanInvite($event, $user)) {
+        if ($this->userCanInvite($event, $currentUser)) {
             DB::transaction(function () use ($event, $user) {
+                $user = $this->findUser->make($user_id);
+
                 $invitation = $this->event->attach($event, 'invitations', [$user->id]);
 
                 $user->notify(new UserInvitation($event));
@@ -32,11 +35,11 @@ class UserInvitationService
         }
     }
 
-    protected function userCanInvite(Event $event, $user)
+    protected function userCanInvite(Event $event, $currentUser)
     {
         if (!$event->is_private ||
-            $event->guests->contains($user->id) ||
-            $event->user_id === $user->id) {
+            $event->guests->contains($currentUser->id) ||
+            $event->user_id === $currentUser->id) {
             return true;
         }
 

@@ -26,4 +26,5 @@ Route::group(['prefix' => 'events'], function () {
     Route::post('/', 'EventsController@store');
     Route::post('{id}/join', 'EventsController@join');
     Route::post('{id}/invite', 'EventsController@invite');
+    Route::delete('{id}/guests/{user_id}', 'EventsController@removeGuest');
 });

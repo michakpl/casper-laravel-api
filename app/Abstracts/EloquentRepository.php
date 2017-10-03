@@ -104,7 +104,16 @@ abstract class EloquentRepository implements RepositoryInterface
 
     public function attach($object, string $relation, array $related_ids)
     {
-        return $object->$relation()->attach($related_ids);
+        $object->$relation()->attach($related_ids);
+
+        return true;
+    }
+
+    public function detach($object, string $relation, array $related_ids)
+    {
+        $object->$relation()->detach($related_ids);
+
+        return true;
     }
 
     public function delete($id)
