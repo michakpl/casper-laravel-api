@@ -23,6 +23,12 @@ class EventsController extends Controller
         UserInvitationService $userInvitation,
         GetAllUpcomingEventsService $getAllUpcomingEvents
     ) {
+        $this->middleware('auth')->only([
+            'store',
+            'join',
+            'invite'
+        ]);
+
         $this->findEvent = $findEvent;
         $this->createEvent = $createEvent;
         $this->joinToEvent = $joinToEvent;
@@ -77,11 +83,11 @@ class EventsController extends Controller
         $event = $this->findEvent->make($id);
 
         if ($event) {
-            $this->joinToEvent->make($event);
-
-            return response()->json([
-                'message'   => 'Successfully joined to event'
-            ]);
+            if ($this->joinToEvent->make($event)) {
+                return response()->json([
+                    'message'   => 'Successfully joined to event'
+                ]);
+            }
         }
 
         return response()->json([

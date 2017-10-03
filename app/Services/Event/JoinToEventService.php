@@ -17,6 +17,23 @@ class JoinToEventService
     {
         $user = Auth::user();
 
-        return $this->event->attach($event, 'guests', [$user->id]);
+        if ($this->userCanJoin($event, $user)) {
+            $this->event->attach($event, 'guests', [$user->id]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function userCanJoin(Event $event, $user)
+    {
+        if (($event->is_private && !$event->invitations->contains($user->id)) ||
+            $event->guests->contains($user->id) ||
+            ($event->guestsLimit != 0 && $event->guestsLimit <= $event->guests->count())) {
+            return false;
+        }
+
+        return true;
     }
 }

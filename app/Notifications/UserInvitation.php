@@ -11,14 +11,16 @@ class UserInvitation extends Notification
 {
     use Queueable;
 
+    protected $event;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($event)
     {
-        //
+        $this->event = $event;
     }
 
     /**
@@ -41,8 +43,8 @@ class UserInvitation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line('User ' . $this->event->user->username . ' invited you to join to his event')
+                    ->action('Join', url(config('app.url') . '/#/event/' . $this->event->id))
                     ->line('Thank you for using our application!');
     }
 

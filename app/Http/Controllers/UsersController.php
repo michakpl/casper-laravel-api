@@ -10,6 +10,11 @@ class UsersController extends Controller
 
     public function __construct(UsersListFetcherService $usersListFetcher)
     {
+        $this->middleware('auth')->only([
+            'currentUser',
+            'index'
+        ]);
+
         $this->usersListFetcher = $usersListFetcher;
     }
 

@@ -13,6 +13,7 @@ class FindEventService
     {
         return $this->event->with('user')
                             ->with('guests')
+                            ->with('invitations')
                             ->findOrFail($id);
     }
 }
