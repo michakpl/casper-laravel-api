@@ -68,6 +68,13 @@ abstract class EloquentRepository implements RepositoryInterface
         return $this;
     }
 
+    public function whereBetween(string $column, array $values, string $boolean = 'and', bool $not = false)
+    {
+        $this->query->whereBetween($column, $values, $boolean, $not);
+
+        return $this;
+    }
+
     public function with($relations): self
     {
         $this->query->with($relations);

@@ -44,8 +44,14 @@ class EventsController extends Controller
     {
         $currentPage = $request->get('current_page', 1);
         $perPageLimit = $request->get('per_page', false);
+        $queryAttributes = $request->only('location_geo');
 
-        $events = $this->getAllUpcomingEvents->make($perPageLimit, $currentPage, ['starts_at', 'asc']);
+        $events = $this->getAllUpcomingEvents->make(
+            $queryAttributes,
+            $perPageLimit,
+            $currentPage,
+            ['starts_at', 'asc']
+        );
 
         return response()->json($events);
     }
