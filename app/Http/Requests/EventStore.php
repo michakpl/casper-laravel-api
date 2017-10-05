@@ -29,7 +29,8 @@ class EventStore extends FormRequest
             'starts_at'            => 'required|date',
             'duration'             => 'required|numeric|min:0',
             'registration_ends_at' => 'required|date',
-            'is_private'           => 'boolean'
+            'is_private'           => 'boolean',
+            'guests_limit'         => 'integer|nullable'
         ];
     }
 }
